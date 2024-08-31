@@ -68,7 +68,7 @@ def get_exchange_rate():
                 data = []
 
                 # Check if the JSON file already exists
-                if os.path.exists("exchange_rate.json"):
+                if os.path.exists("exchange_rates.json"):
                     # Load the existing data
                     with open("exchange_rates.json", "r") as json_file:
                         data = json.load(json_file)
@@ -77,7 +77,7 @@ def get_exchange_rate():
                 data.append(new_record)
 
                 # Save the updated data back to the JSON file
-                with open("exchange_rate.json", "w") as json_file:
+                with open("exchange_rates.json", "w") as json_file:
                     json.dump(data, json_file, indent=4)
 
                 print("Exchange rate appended to exchange_rate.json")

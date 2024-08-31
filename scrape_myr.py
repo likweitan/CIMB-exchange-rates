@@ -2,7 +2,7 @@ import re
 import asyncio
 import json
 import os
-from datetime import datetime
+from datetime import datetime, timedelta
 from playwright.sync_api import sync_playwright
 
 # def get_exchange_rate():
@@ -55,10 +55,13 @@ def get_exchange_rate():
             if match:
                 rate = match.group(1)  # This will give you '3.2861'
 
-                # Prepare the new data record
+                # Get the current time in UTC and then convert it to UTC+8
+                timestamp = datetime.utcnow() + timedelta(hours=8)
+
+                # Prepare the new data record with the UTC+8 timestamp
                 new_record = {
                     "exchange_rate": rate,
-                    "timestamp": datetime.utcnow().isoformat()
+                    "timestamp": timestamp.isoformat()
                 }
 
                 # Initialize an empty list for records

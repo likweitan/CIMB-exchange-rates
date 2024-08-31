@@ -37,6 +37,6 @@ jobs:
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git add exchange_rate.json
+          git add exchange_rates.json
           git commit -m "Update exchange rate"
           git push

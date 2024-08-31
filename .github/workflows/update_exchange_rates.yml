@@ -27,6 +27,13 @@ jobs:
         run: |
           playwright install
 
+      - uses: jannekem/run-python-script-action@v1
+        with:
+          script: |
+            import os
+            print("Directory contents:")
+            for f in os.listdir():
+                print(f)
       - name: Run Playwright Script
         run: |
           python scrape_myr.py

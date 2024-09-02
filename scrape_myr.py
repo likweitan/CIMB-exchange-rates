@@ -61,7 +61,24 @@ def get_exchange_rate():
         
         print(f"WISE Exchange Rate: {wise_rate}")
         # Close the browser
+        # browser.close()
+
+        page = browser.new_page()
+
+        # Navigate to the Revolut currency converter page
+        page.goto("https://www.pandaremit.com/en/sgp/send-money-to-malaysia")
+        
+        # Wait for the element to be visible
+        page.wait_for_selector("p.item-info-amount")
+        
+        # Get the exchange rate element
+        # Extract the text content
+        pandaremit_rate = page.eval_on_selector('p.item-info-amount', 'element => element.textContent.trim().split(" ")[0]')
+        
+        print(f"pandaremit_rate Exchange Rate: {pandaremit_rate}")
+        # Close the browser
         browser.close()
+
         if text:
             text = text.strip()
 
@@ -87,6 +104,21 @@ def get_exchange_rate():
                     "platform": "WISE"
                 }
 
+        if pandaremit_rate:
+            pandaremit_rate = pandaremit_rate.strip()
+
+                # Extract the exchange rate using regular expression
+            match = re.search(r'(\d+(\.\d+)?)', pandaremit_rate)
+            if match:
+                pandaremit_rate = match.group(1)  # This will give you '3.2861'
+
+                # Prepare the new data record with the UTC+8 timestamp
+                new_record_pandaremit = {
+                    "exchange_rate": pandaremit_rate,
+                    "timestamp": timestamp.isoformat(),
+                    "platform": "PANDAREMIT"
+                }
+
                 # Initialize an empty list for records
                 data = []
 
@@ -99,18 +131,18 @@ def get_exchange_rate():
                 # Append the new record to the data list
                 data.append(new_record)
                 data.append(new_record_wise)
+                data.append(new_record_pandaremit)
 
                 # Save the updated data back to the JSON file
                 with open("exchange_rates.json", "w") as json_file:
                     json.dump(data, json_file, indent=4)
 
                 print("Exchange rate appended to exchange_rate.json")
-                return rate
 
                 
 
 # To run the function and see the output
 # if __name__ == "__main__":
 # rate = asyncio.run(get_exchange_rate())
-text = get_exchange_rate()
+get_exchange_rate()
 # print(f"The exchange rate is: {text}")

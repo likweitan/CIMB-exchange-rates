@@ -398,5 +398,20 @@
         "exchange_rate": "3.3416",
         "timestamp": "2024-09-03T04:17:14.529508",
         "platform": "PANDAREMIT"
+    },
+    {
+        "exchange_rate": "3.3044",
+        "timestamp": "2024-09-03T05:13:45.011799",
+        "platform": "CIMB"
+    },
+    {
+        "exchange_rate": "3.333",
+        "timestamp": "2024-09-03T05:13:45.011799",
+        "platform": "WISE"
+    },
+    {
+        "exchange_rate": "3.3411",
+        "timestamp": "2024-09-03T05:13:45.011799",
+        "platform": "PANDAREMIT"
     }
 ]

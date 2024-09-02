@@ -43,8 +43,23 @@ def get_exchange_rate():
         # Extract the exchange rate using the appropriate selector
         text = page.query_selector("#rateStr").text_content()
 
-        print("Current SGD to MYR exchange rate:", text)
+        print("CIMB Exchange Rate:", text)
 
+        page = browser.new_page()
+
+        # Navigate to the Revolut currency converter page
+        page.goto("https://wise.com/gb/currency-converter/sgd-to-myr-rate")
+        
+        # Wait for the element to be visible
+        page.wait_for_selector("span.text-success")
+        
+        # Get the exchange rate element
+        exchange_rate_element = page.query_selector("span.text-success")
+        
+        # Extract the text content
+        wise_rate = exchange_rate_element.text_content()
+        
+        print(f"WISE Exchange Rate: {text}")
         # Close the browser
         browser.close()
         if text:
@@ -61,7 +76,15 @@ def get_exchange_rate():
                 # Prepare the new data record with the UTC+8 timestamp
                 new_record = {
                     "exchange_rate": rate,
-                    "timestamp": timestamp.isoformat()
+                    "timestamp": timestamp.isoformat(),
+                    "platform": "CIMB"
+                }
+
+                # Prepare the new data record with the UTC+8 timestamp
+                new_record_wise = {
+                    "exchange_rate": wise_rate,
+                    "timestamp": timestamp.isoformat(),
+                    "platform": "WISE"
                 }
 
                 # Initialize an empty list for records
@@ -75,6 +98,7 @@ def get_exchange_rate():
 
                 # Append the new record to the data list
                 data.append(new_record)
+                data.append(new_record_wise)
 
                 # Save the updated data back to the JSON file
                 with open("exchange_rates.json", "w") as json_file:
@@ -89,4 +113,4 @@ def get_exchange_rate():
 # if __name__ == "__main__":
 # rate = asyncio.run(get_exchange_rate())
 text = get_exchange_rate()
-print(f"The exchange rate is: {text}")
+# print(f"The exchange rate is: {text}")

@@ -1,134 +1,167 @@
 [
     {
         "exchange_rate": "3.2895",
-        "timestamp": "2024-09-01T01:12:19.332438"
+        "timestamp": "2024-09-01T01:12:19.332438",
+        "platform": "CIMB"
     },
     {
         "exchange_rate": "3.2895",
-        "timestamp": "2024-09-01T02:18:29.036276"
+        "timestamp": "2024-09-01T02:18:29.036276",
+        "platform": "CIMB"
     },
     {
         "exchange_rate": "3.2895",
-        "timestamp": "2024-09-01T03:11:38.698656"
+        "timestamp": "2024-09-01T03:11:38.698656",
+        "platform": "CIMB"
     },
     {
         "exchange_rate": "3.2895",
-        "timestamp": "2024-09-01T04:16:43.763797"
+        "timestamp": "2024-09-01T04:16:43.763797",
+        "platform": "CIMB"
     },
     {
         "exchange_rate": "3.2895",
-        "timestamp": "2024-09-01T05:12:58.169715"
+        "timestamp": "2024-09-01T05:12:58.169715",
+        "platform": "CIMB"
     },
     {
         "exchange_rate": "3.2895",
-        "timestamp": "2024-09-01T06:15:16.190343"
+        "timestamp": "2024-09-01T06:15:16.190343",
+        "platform": "CIMB"
     },
     {
         "exchange_rate": "3.2895",
-        "timestamp": "2024-09-01T07:14:01.723619"
+        "timestamp": "2024-09-01T07:14:01.723619",
+        "platform": "CIMB"
     },
     {
         "exchange_rate": "3.2895",
-        "timestamp": "2024-09-01T09:20:05.653582"
+        "timestamp": "2024-09-01T09:20:05.653582",
+        "platform": "CIMB"
     },
     {
         "exchange_rate": "3.2895",
-        "timestamp": "2024-09-01T10:51:26.997258"
+        "timestamp": "2024-09-01T10:51:26.997258",
+        "platform": "CIMB"
     },
     {
         "exchange_rate": "3.2895",
-        "timestamp": "2024-09-01T11:21:39.630337"
+        "timestamp": "2024-09-01T11:21:39.630337",
+        "platform": "CIMB"
     },
     {
         "exchange_rate": "3.2895",
-        "timestamp": "2024-09-01T12:19:52.565706"
+        "timestamp": "2024-09-01T12:19:52.565706",
+        "platform": "CIMB"
     },
     {
         "exchange_rate": "3.2895",
-        "timestamp": "2024-09-01T13:16:00.581241"
+        "timestamp": "2024-09-01T13:16:00.581241",
+        "platform": "CIMB"
     },
     {
         "exchange_rate": "3.2895",
-        "timestamp": "2024-09-01T14:21:34.738937"
+        "timestamp": "2024-09-01T14:21:34.738937",
+        "platform": "CIMB"
     },
     {
         "exchange_rate": "3.2895",
-        "timestamp": "2024-09-01T15:13:01.573334"
+        "timestamp": "2024-09-01T15:13:01.573334",
+        "platform": "CIMB"
     },
     {
         "exchange_rate": "3.2895",
-        "timestamp": "2024-09-01T16:18:02.377050"
+        "timestamp": "2024-09-01T16:18:02.377050",
+        "platform": "CIMB"
     },
     {
         "exchange_rate": "3.2895",
-        "timestamp": "2024-09-01T17:15:29.989160"
+        "timestamp": "2024-09-01T17:15:29.989160",
+        "platform": "CIMB"
     },
     {
         "exchange_rate": "3.2895",
-        "timestamp": "2024-09-01T18:14:19.324512"
+        "timestamp": "2024-09-01T18:14:19.324512",
+        "platform": "CIMB"
     },
     {
         "exchange_rate": "3.2895",
-        "timestamp": "2024-09-01T19:12:47.776520"
+        "timestamp": "2024-09-01T19:12:47.776520",
+        "platform": "CIMB"
     },
     {
         "exchange_rate": "3.2895",
-        "timestamp": "2024-09-01T20:27:24.719029"
+        "timestamp": "2024-09-01T20:27:24.719029",
+        "platform": "CIMB"
     },
     {
         "exchange_rate": "3.2895",
-        "timestamp": "2024-09-01T21:18:20.475958"
+        "timestamp": "2024-09-01T21:18:20.475958",
+        "platform": "CIMB"
     },
     {
         "exchange_rate": "3.2895",
-        "timestamp": "2024-09-01T22:12:59.724119"
+        "timestamp": "2024-09-01T22:12:59.724119",
+        "platform": "CIMB"
     },
     {
         "exchange_rate": "3.2895",
-        "timestamp": "2024-09-01T23:14:24.816937"
+        "timestamp": "2024-09-01T23:14:24.816937",
+        "platform": "CIMB"
     },
     {
         "exchange_rate": "3.2895",
-        "timestamp": "2024-09-02T00:18:17.875475"
+        "timestamp": "2024-09-02T00:18:17.875475",
+        "platform": "CIMB"
     },
     {
         "exchange_rate": "3.2895",
-        "timestamp": "2024-09-02T01:12:16.553411"
+        "timestamp": "2024-09-02T01:12:16.553411",
+        "platform": "CIMB"
     },
     {
         "exchange_rate": "3.2895",
-        "timestamp": "2024-09-02T02:18:52.550911"
+        "timestamp": "2024-09-02T02:18:52.550911",
+        "platform": "CIMB"
     },
     {
         "exchange_rate": "3.2895",
-        "timestamp": "2024-09-02T03:12:07.666329"
+        "timestamp": "2024-09-02T03:12:07.666329",
+        "platform": "CIMB"
     },
     {
         "exchange_rate": "3.2895",
-        "timestamp": "2024-09-02T04:16:22.367003"
+        "timestamp": "2024-09-02T04:16:22.367003",
+        "platform": "CIMB"
     },
     {
         "exchange_rate": "3.2895",
-        "timestamp": "2024-09-02T05:13:32.813396"
+        "timestamp": "2024-09-02T05:13:32.813396",
+        "platform": "CIMB"
     },
     {
         "exchange_rate": "3.2895",
-        "timestamp": "2024-09-02T06:15:08.609555"
+        "timestamp": "2024-09-02T06:15:08.609555",
+        "platform": "CIMB"
     },
     {
         "exchange_rate": "3.2895",
-        "timestamp": "2024-09-02T07:14:11.007320"
+        "timestamp": "2024-09-02T07:14:11.007320",
+        "platform": "CIMB"
     },
     {
         "exchange_rate": "3.3146",
-        "timestamp": "2024-09-02T09:10:59.283569"
+        "timestamp": "2024-09-02T09:10:59.283569",
+        "platform": "CIMB"
     },
     {
         "exchange_rate": "3.3143",
-        "timestamp": "2024-09-02T10:42:17.711054"
+        "timestamp": "2024-09-02T10:42:17.711054",
+        "platform": "CIMB"
     },
     {
         "exchange_rate": "3.3138",
-        "timestamp": "2024-09-02T11:17:11.893844"
+        "timestamp": "2024-09-02T11:17:11.893844",
+        "platform": "CIMB"
     }
 ]

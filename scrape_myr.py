@@ -108,10 +108,10 @@ def get_exchange_rate():
             pandaremit_rate = pandaremit_rate.strip()
 
                 # Extract the exchange rate using regular expression
-            match = re.search(r'(\d+(\.\d+)?)', pandaremit_rate)
+            match = re.search(r'(\d+\.\d+)', pandaremit_rate)
             if match:
                 pandaremit_rate = match.group(1)  # This will give you '3.2861'
-
+                print(pandaremit_rate)
                 # Prepare the new data record with the UTC+8 timestamp
                 new_record_pandaremit = {
                     "exchange_rate": pandaremit_rate,

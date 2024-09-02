@@ -51,15 +51,15 @@ def get_exchange_rate():
         page.goto("https://wise.com/gb/currency-converter/sgd-to-myr-rate")
         
         # Wait for the element to be visible
-        page.wait_for_selector("span.text-success")
+        page.wait_for_selector("span.text-success:nth-of-type(1)")
         
         # Get the exchange rate element
-        exchange_rate_element = page.query_selector("span.text-success")
+        exchange_rate_element = page.query_selector("span.text-success:nth-of-type(1)")
         
         # Extract the text content
         wise_rate = exchange_rate_element.text_content()
         
-        print(f"WISE Exchange Rate: {text}")
+        print(f"WISE Exchange Rate: {wise_rate}")
         # Close the browser
         browser.close()
         if text:

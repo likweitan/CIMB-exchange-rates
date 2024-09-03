@@ -131,7 +131,7 @@ def get_exchange_rate():
                 # Append the new record to the data list
                 data.append(new_record)
                 data.append(new_record_wise)
-                data.append(new_record_pandaremit)
+                # data.append(new_record_pandaremit)
 
                 # Save the updated data back to the JSON file
                 with open("exchange_rates.json", "w") as json_file:

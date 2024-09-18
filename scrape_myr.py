@@ -63,19 +63,19 @@ def get_exchange_rate():
         # Close the browser
         # browser.close()
 
-        page = browser.new_page()
+        # page = browser.new_page()
 
-        # Navigate to the Revolut currency converter page
-        page.goto("https://www.pandaremit.com/en/sgp/send-money-to-malaysia")
+        # # Navigate to the Revolut currency converter page
+        # page.goto("https://www.pandaremit.com/en/sgp/send-money-to-malaysia")
         
-        # Wait for the element to be visible
-        page.wait_for_selector("p.item-info-amount")
+        # # Wait for the element to be visible
+        # page.wait_for_selector("p.item-info-amount")
         
-        # Get the exchange rate element
-        # Extract the text content
-        pandaremit_rate = page.eval_on_selector('p.item-info-amount', 'element => element.textContent.trim().split(" ")[0]')
+        # # Get the exchange rate element
+        # # Extract the text content
+        # pandaremit_rate = page.eval_on_selector('p.item-info-amount', 'element => element.textContent.trim().split(" ")[0]')
         
-        print(f"pandaremit_rate Exchange Rate: {pandaremit_rate}")
+        # print(f"pandaremit_rate Exchange Rate: {pandaremit_rate}")
         # Close the browser
         browser.close()
 
@@ -104,24 +104,6 @@ def get_exchange_rate():
                     "platform": "WISE"
                 }
 
-        if pandaremit_rate:
-            pandaremit_rate = pandaremit_rate.strip()
-
-                # Extract the exchange rate using regular expression
-            match = re.search(r'(\d+\.\d+)', pandaremit_rate)
-            if match:
-                pandaremit_rate = match.group(1)  # This will give you '3.2861'
-                print(pandaremit_rate)
-                # Prepare the new data record with the UTC+8 timestamp
-                new_record_pandaremit = {
-                    "exchange_rate": pandaremit_rate,
-                    "timestamp": timestamp.isoformat(),
-                    "platform": "PANDAREMIT"
-                }
-
-                # Initialize an empty list for records
-                data = []
-
                 # Check if the JSON file already exists
                 if os.path.exists("exchange_rates.json"):
                     # Load the existing data
@@ -138,6 +120,24 @@ def get_exchange_rate():
                     json.dump(data, json_file, indent=4)
 
                 print("Exchange rate appended to exchange_rate.json")
+        # if pandaremit_rate:
+        #     pandaremit_rate = pandaremit_rate.strip()
+
+        #         # Extract the exchange rate using regular expression
+        #     match = re.search(r'(\d+\.\d+)', pandaremit_rate)
+        #     if match:
+        #         pandaremit_rate = match.group(1)  # This will give you '3.2861'
+        #         print(pandaremit_rate)
+        #         # Prepare the new data record with the UTC+8 timestamp
+        #         new_record_pandaremit = {
+        #             "exchange_rate": pandaremit_rate,
+        #             "timestamp": timestamp.isoformat(),
+        #             "platform": "PANDAREMIT"
+        #         }
+
+        #         # Initialize an empty list for records
+        #         data = []
+
 
                 
 

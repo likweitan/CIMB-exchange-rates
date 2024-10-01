@@ -2,12 +2,7 @@ name: Update Exchange Rates
 
 on:
   schedule:
-    - cron: '5 * * * *'   # Run at 5 minutes past every hour
-    - cron: '15 * * * *'  # Run at 15 minutes past every hour
-    - cron: '25 * * * *'  # Run at 25 minutes past every hour
-    - cron: '35 * * * *'  # Run at 35 minutes past every hour
-    - cron: '45 * * * *'  # Run at 45 minutes past every hour
-    - cron: '55 * * * *'  # Run at 55 minutes past every hour
+    - cron: '*/5 * * * *'
   workflow_dispatch:         # Allows manual triggering of the workflow
 
 jobs:

@@ -65523,5 +65523,15 @@
         "exchange_rate": "3.318",
         "timestamp": "2024-11-01T07:59:38.269688",
         "platform": "WISE"
+    },
+    {
+        "exchange_rate": "3.3080",
+        "timestamp": "2024-11-01T09:57:26.637086",
+        "platform": "CIMB"
+    },
+    {
+        "exchange_rate": "3.312",
+        "timestamp": "2024-11-01T09:57:26.637086",
+        "platform": "WISE"
     }
 ]

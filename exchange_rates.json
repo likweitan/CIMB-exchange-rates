@@ -87743,5 +87743,15 @@
         "exchange_rate": "3.314",
         "timestamp": "2024-11-26T16:58:33.338414",
         "platform": "WISE"
+    },
+    {
+        "exchange_rate": "3.3104",
+        "timestamp": "2024-11-26T17:24:12.377882",
+        "platform": "CIMB"
+    },
+    {
+        "exchange_rate": "3.313",
+        "timestamp": "2024-11-26T17:24:12.377882",
+        "platform": "WISE"
     }
 ]

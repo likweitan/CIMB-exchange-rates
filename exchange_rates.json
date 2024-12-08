@@ -97863,5 +97863,15 @@
         "exchange_rate": "3.293",
         "timestamp": "2024-12-08T23:48:05.746648",
         "platform": "WISE"
+    },
+    {
+        "exchange_rate": "3.2772",
+        "timestamp": "2024-12-08T23:57:23.805768",
+        "platform": "CIMB"
+    },
+    {
+        "exchange_rate": "3.293",
+        "timestamp": "2024-12-08T23:57:23.805768",
+        "platform": "WISE"
     }
 ]

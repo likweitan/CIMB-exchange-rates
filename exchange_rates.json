@@ -102383,5 +102383,15 @@
         "exchange_rate": "3.299",
         "timestamp": "2024-12-15T17:18:53.350174",
         "platform": "WISE"
+    },
+    {
+        "exchange_rate": "3.2804",
+        "timestamp": "2024-12-15T17:31:39.576750",
+        "platform": "CIMB"
+    },
+    {
+        "exchange_rate": "3.299",
+        "timestamp": "2024-12-15T17:31:39.576750",
+        "platform": "WISE"
     }
 ]

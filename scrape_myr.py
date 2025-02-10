@@ -58,7 +58,16 @@ def debug_selectors(page, url, expected_selector):
 
 def get_exchange_rate():
     with sync_playwright() as p:
-        browser = p.chromium.launch(headless=False)  # Set to False to see the browser
+        # Launch browser in headless mode with additional arguments for stability
+        browser = p.chromium.launch(
+            headless=True,
+            args=[
+                '--disable-dev-shm-usage',
+                '--no-sandbox',
+                '--disable-setuid-sandbox',
+                '--disable-gpu'
+            ]
+        )
         rates = []
         timestamp = datetime.utcnow() + timedelta(hours=8)
         
@@ -80,7 +89,7 @@ def get_exchange_rate():
                 page.wait_for_timeout(5000)  # Wait additional 5 seconds
                 
                 # Debug page content and selectors
-                #debug_selectors(page, "CIMB", "#rateStr")
+                debug_selectors(page, "CIMB", "#rateStr")
                 
                 # Try to find the rate element
                 rate_element = page.query_selector("#rateStr")
@@ -148,9 +157,6 @@ def get_exchange_rate():
                 print("\nExchange rates appended to exchange_rates.json")
             
         finally:
-            # Give time to see the pages if needed
-            print("\nWaiting 10 seconds before closing browser...")
-            page.wait_for_timeout(10000)
             browser.close()
 
                 

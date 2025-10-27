@@ -36,7 +36,7 @@ jobs:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
         run: |
-          python main.py
+          python /app/scripts/scrape_rates.py
 
       - name: Commit updated JSON file
         run: |

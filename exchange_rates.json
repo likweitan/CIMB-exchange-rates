@@ -151943,5 +151943,20 @@
         "timestamp": "2025-10-27T15:25:27.601133",
         "platform": "WISE",
         "source_url": "https://wise.com/gb/currency-converter/sgd-to-myr-rate"
+    },
+    {
+        "exchange_rate": "3.2410",
+        "timestamp": "2025-10-27T16:35:39.611366",
+        "platform": "CIMB"
+    },
+    {
+        "exchange_rate": "3.2486",
+        "timestamp": "2025-10-27T16:35:39.611366",
+        "platform": "WISE"
+    },
+    {
+        "exchange_rate": "3.2598",
+        "timestamp": "2025-10-27T16:35:39.611366",
+        "platform": "WESTERNUNION"
     }
 ]

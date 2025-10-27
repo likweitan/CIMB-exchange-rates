@@ -5,7 +5,7 @@ from datetime import datetime, timedelta
 from typing import List, Dict
 
 from dotenv import load_dotenv
-from playwright.sync_api import sync_playwright
+from playwright.sync_api import sync_playwright, TimeoutError as PlaywrightTimeoutError
 from supabase import create_client, Client
 
 
@@ -17,7 +17,7 @@ SUPABASE_TABLE = os.getenv("SUPABASE_TABLE", "exchange_rates")
 
 CIMB_URL = "https://www.cimbclicks.com.sg/sgd-to-myr"
 WISE_URL = "https://wise.com/gb/currency-converter/sgd-to-myr-rate"
-
+WESTERNUNION_URL = "https://www.westernunion.com/sg/en/currency-converter/sgd-to-myr-rate.html"
 
 def supabase_configured() -> bool:
     """Check that Supabase credentials look usable."""
@@ -46,7 +46,6 @@ def insert_into_supabase(rates: List[Dict[str, str]]) -> None:
                 "exchange_rate": rate["exchange_rate"],
                 "retrieved_at": rate["timestamp"],
                 "platform": rate["platform"],
-                "source_url": rate["source_url"],
                 "base_currency": "SGD",
                 "target_currency": "MYR",
             }
@@ -190,7 +189,6 @@ def get_exchange_rate() -> None:
                                 "exchange_rate": match.group(1),
                                 "timestamp": timestamp.isoformat(),
                                 "platform": "CIMB",
-                                "source_url": CIMB_URL,
                             }
                         )
                         print(f"CIMB Exchange Rate: {match.group(1)}")
@@ -272,7 +270,6 @@ def get_exchange_rate() -> None:
                             "exchange_rate": wise_rate,
                             "timestamp": timestamp.isoformat(),
                             "platform": "WISE",
-                            "source_url": WISE_URL,
                         }
                     )
                     print(f"WISE Exchange Rate: {wise_rate}")
@@ -284,6 +281,153 @@ def get_exchange_rate() -> None:
 
             except Exception as error:
                 print(f"Error fetching Wise rate: {error}")
+
+            # Western Union rate
+            print("\nAttempting to fetch Western Union rate...")
+            context = None
+            page = None
+            try:
+                context = browser.new_context(
+                    user_agent=(
+                        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+                        "AppleWebKit/537.36 (KHTML, like Gecko) "
+                        "Chrome/120.0.0.0 Safari/537.36"
+                    ),
+                    viewport={"width": 1920, "height": 1080},
+                    locale="en-US",
+                    extra_http_headers={
+                        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8",
+                        "Accept-Language": "en-US,en;q=0.9",
+                    },
+                )
+
+                page = context.new_page()
+
+                def log_console_message(message):
+                    try:
+                        print(f"[WesternUnion console:{message.type}] {message.text}")
+                    except Exception as log_error:
+                        print(f"[WesternUnion console log error] {log_error}")
+
+                def log_response(response):
+                    try:
+                        status = response.status
+                        if status >= 400:
+                            print(f"[WesternUnion response {status}] {response.url}")
+                    except Exception as log_error:
+                        print(f"[WesternUnion response log error] {log_error}")
+
+                def log_failed_request(request):
+                    try:
+                        failure = request.failure
+                        if not failure:
+                            failure_text = "Unknown failure"
+                        elif isinstance(failure, dict):
+                            failure_text = failure.get("errorText") or str(failure)
+                        else:
+                            failure_text = getattr(failure, "error_text", None) or str(failure)
+                        print(f"[WesternUnion request failed] {request.url} -> {failure_text}")
+                    except Exception as log_error:
+                        print(f"[WesternUnion request log error] {log_error}")
+
+                def capture_debug(label: str) -> None:
+                    if not page:
+                        return
+                    try:
+                        debug_selectors(page, f"Western Union {label}", "span.fx-to")
+                    except Exception as debug_error:
+                        print(f"[WesternUnion debug capture error] {debug_error}")
+
+                page.on("console", log_console_message)
+                page.on("response", log_response)
+                page.on("request_failed", log_failed_request)
+
+                print("Navigating to Western Union URL...")
+                page.add_init_script(
+                    """
+                    Object.defineProperty(navigator, 'webdriver', {
+                        get: () => undefined,
+                    });
+                    window.chrome = {
+                        runtime: {},
+                        loadTimes: function() {},
+                        csi: function() {},
+                        app: {},
+                    };
+                    delete navigator.__proto__.webdriver;
+                """
+                )
+
+                try:
+                    response = page.goto(
+                        WESTERNUNION_URL, timeout=60000, wait_until="domcontentloaded"
+                    )
+                except PlaywrightTimeoutError as navigation_error:
+                    print(
+                        "Western Union navigation timed out while waiting for domcontentloaded; capturing diagnostics and continuing."
+                    )
+                    capture_debug("(navigation timeout)")
+                    response = None
+
+                if response:
+                    print(f"Page response status: {response.status}")
+                else:
+                    print("Page response status: No response object returned by Playwright.")
+
+                try:
+                    page.wait_for_load_state("networkidle", timeout=30000)
+                    print("Western Union page reached 'networkidle' state.")
+                except PlaywrightTimeoutError as timeout_error:
+                    print(
+                        "Western Union page did not reach 'networkidle' within 30s; capturing diagnostics and continuing."
+                    )
+                    capture_debug("(networkidle timeout)")
+
+                page.wait_for_timeout(5000)
+
+                selectors = [
+                    "span.fx-to",
+                    "[class*='fx-to']",
+                    "[data-testid*='fx-to']",
+                    "[class*='currency'] span",
+                ]
+
+                rate_element = None
+                for selector in selectors:
+                    rate_element = page.query_selector(selector)
+                    if rate_element:
+                        print(f"Found element with selector: {selector}")
+                        break
+
+                if rate_element:
+                    western_rate_text = rate_element.text_content().strip()
+                    print(f"Found rate element with text: {western_rate_text}")
+
+                    match = re.search(r"([\d]+(?:[.,]\d+)?)", western_rate_text)
+                    if match:
+                        western_rate = match.group(1).replace(",", "")
+                        rates.append(
+                            {
+                                "exchange_rate": western_rate,
+                                "timestamp": timestamp.isoformat(),
+                                "platform": "WESTERNUNION",
+                            }
+                        )
+                        print(f"Western Union Exchange Rate: {western_rate}")
+                    else:
+                        print("Could not parse Western Union rate from text!")
+                        capture_debug("(unparsed rate)")
+                else:
+                    print("Western Union rate element not found!")
+                    capture_debug("(selector not found)")
+                    page.screenshot(
+                        path=f"westernunion_debug_{datetime.now().strftime('%Y%m%d_%H%M%S')}.png"
+                    )
+            except Exception as error:
+                print(f"Error fetching Western Union rate: {error}")
+            finally:
+                if context:
+                    context.close()
 
             if rates:
                 existing_data = []

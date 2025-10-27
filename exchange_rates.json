@@ -151883,5 +151883,17 @@
         "exchange_rate": "3.2469",
         "timestamp": "2025-10-27T12:35:46.556772",
         "platform": "WISE"
+    },
+    {
+        "exchange_rate": "3.2395",
+        "timestamp": "2025-10-27T13:27:49.015608",
+        "platform": "CIMB",
+        "source_url": "https://www.cimbclicks.com.sg/sgd-to-myr"
+    },
+    {
+        "exchange_rate": "3.2471",
+        "timestamp": "2025-10-27T13:27:49.015608",
+        "platform": "WISE",
+        "source_url": "https://wise.com/gb/currency-converter/sgd-to-myr-rate"
     }
 ]

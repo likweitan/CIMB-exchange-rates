@@ -58,9 +58,12 @@ def debug_selectors(page, url, expected_selector):
 
 def get_exchange_rate():
     with sync_playwright() as p:
+        # Detect if running in CI/headless environment
+        is_ci = os.getenv('CI') == 'true' or os.getenv('GITHUB_ACTIONS') == 'true' or not os.getenv('DISPLAY')
+        
         # Launch browser with stealth settings to avoid bot detection
         browser = p.chromium.launch(
-            headless=False,  # Changed to False - headless browsers are easier to detect
+            headless=is_ci,  # Use headless mode in CI, headed mode locally
             args=[
                 '--disable-blink-features=AutomationControlled',  # Hide automation
                 '--disable-dev-shm-usage',
@@ -100,18 +103,39 @@ def get_exchange_rate():
                 
                 # Add stealth scripts to hide automation
                 page.add_init_script("""
+                    // Overwrite the `navigator.webdriver` property to return undefined
                     Object.defineProperty(navigator, 'webdriver', {
                         get: () => undefined
                     });
+                    
+                    // Mock the chrome object
                     window.chrome = {
-                        runtime: {}
+                        runtime: {},
+                        loadTimes: function() {},
+                        csi: function() {},
+                        app: {}
                     };
+                    
+                    // Mock permissions
+                    const originalQuery = window.navigator.permissions.query;
+                    window.navigator.permissions.query = (parameters) => (
+                        parameters.name === 'notifications' ?
+                        Promise.resolve({ state: Notification.permission }) :
+                        originalQuery(parameters)
+                    );
+                    
+                    // Overwrite the `plugins` property to use a custom getter.
                     Object.defineProperty(navigator, 'plugins', {
                         get: () => [1, 2, 3, 4, 5]
                     });
+                    
+                    // Overwrite the `languages` property to use a custom getter.
                     Object.defineProperty(navigator, 'languages', {
                         get: () => ['en-US', 'en']
                     });
+                    
+                    // Pass the Webdriver Test
+                    delete navigator.__proto__.webdriver;
                 """)
                 
                 # Enable request/response logging
@@ -168,6 +192,13 @@ def get_exchange_rate():
                     Object.defineProperty(navigator, 'webdriver', {
                         get: () => undefined
                     });
+                    window.chrome = {
+                        runtime: {},
+                        loadTimes: function() {},
+                        csi: function() {},
+                        app: {}
+                    };
+                    delete navigator.__proto__.webdriver;
                 """)
                 
                 response = page.goto("https://wise.com/gb/currency-converter/sgd-to-myr-rate", timeout=60000, wait_until='domcontentloaded')

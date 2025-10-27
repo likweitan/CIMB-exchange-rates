@@ -58,14 +58,16 @@ def debug_selectors(page, url, expected_selector):
 
 def get_exchange_rate():
     with sync_playwright() as p:
-        # Launch browser in headless mode with additional arguments for stability
+        # Launch browser with stealth settings to avoid bot detection
         browser = p.chromium.launch(
-            headless=True,
+            headless=False,  # Changed to False - headless browsers are easier to detect
             args=[
+                '--disable-blink-features=AutomationControlled',  # Hide automation
                 '--disable-dev-shm-usage',
                 '--no-sandbox',
                 '--disable-setuid-sandbox',
-                '--disable-gpu'
+                '--disable-gpu',
+                '--window-size=1920,1080'
             ]
         )
         rates = []
@@ -75,13 +77,48 @@ def get_exchange_rate():
             # CIMB Rate
             try:
                 print("\nAttempting to fetch CIMB rate...")
-                page = browser.new_page()
+                context = browser.new_context(
+                    user_agent='Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+                    viewport={'width': 1920, 'height': 1080},
+                    locale='en-US',
+                    timezone_id='Asia/Singapore',
+                    extra_http_headers={
+                        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8',
+                        'Accept-Language': 'en-US,en;q=0.9',
+                        'Accept-Encoding': 'gzip, deflate, br',
+                        'DNT': '1',
+                        'Connection': 'keep-alive',
+                        'Upgrade-Insecure-Requests': '1',
+                        'Sec-Fetch-Dest': 'document',
+                        'Sec-Fetch-Mode': 'navigate',
+                        'Sec-Fetch-Site': 'none',
+                        'Sec-Fetch-User': '?1',
+                        'Cache-Control': 'max-age=0',
+                    }
+                )
+                page = context.new_page()
+                
+                # Add stealth scripts to hide automation
+                page.add_init_script("""
+                    Object.defineProperty(navigator, 'webdriver', {
+                        get: () => undefined
+                    });
+                    window.chrome = {
+                        runtime: {}
+                    };
+                    Object.defineProperty(navigator, 'plugins', {
+                        get: () => [1, 2, 3, 4, 5]
+                    });
+                    Object.defineProperty(navigator, 'languages', {
+                        get: () => ['en-US', 'en']
+                    });
+                """)
                 
                 # Enable request/response logging
                 page.on("request", lambda request: print(f"Request: {request.url}"))
                 page.on("response", lambda response: print(f"Response: {response.url} - {response.status}"))
                 
-                response = page.goto("https://www.cimbclicks.com.sg/sgd-to-myr", timeout=60000)
+                response = page.goto("https://www.cimbclicks.com.sg/sgd-to-myr", timeout=60000, wait_until='domcontentloaded')
                 print(f"Page response status: {response.status}")
                 
                 # Wait for network idle and a bit more time for dynamic content
@@ -115,8 +152,25 @@ def get_exchange_rate():
             # Wise Rate
             try:
                 print("\nAttempting to fetch Wise rate...")
-                page = browser.new_page()
-                response = page.goto("https://wise.com/gb/currency-converter/sgd-to-myr-rate", timeout=60000)
+                context = browser.new_context(
+                    user_agent='Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+                    viewport={'width': 1920, 'height': 1080},
+                    locale='en-US',
+                    extra_http_headers={
+                        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8',
+                        'Accept-Language': 'en-US,en;q=0.9',
+                    }
+                )
+                page = context.new_page()
+                
+                # Add stealth scripts
+                page.add_init_script("""
+                    Object.defineProperty(navigator, 'webdriver', {
+                        get: () => undefined
+                    });
+                """)
+                
+                response = page.goto("https://wise.com/gb/currency-converter/sgd-to-myr-rate", timeout=60000, wait_until='domcontentloaded')
                 print(f"Page response status: {response.status}")
                 
                 page.wait_for_load_state('networkidle')

@@ -32,6 +32,9 @@ jobs:
           playwright install
 
       - name: Run Playwright Script
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
         run: |
           python main.py
 

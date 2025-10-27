@@ -129760,14 +129760,6 @@
         "platform": "CIMB"
     },
     {
-        "exchange_rate": "3.297",
-<<<<<<< HEAD
-        "timestamp": "2025-02-10T11:52:31.492157",
-=======
-        "timestamp": "2025-01-15T21:32:26.484253",
-        "platform": "WISE"
-    },
-    {
         "exchange_rate": "3.2673",
         "timestamp": "2025-01-15T21:41:37.220319",
         "platform": "CIMB"
@@ -151855,6 +151847,21 @@
     {
         "exchange_rate": "3.285",
         "timestamp": "2025-02-07T23:54:21.208857",
+        "platform": "WISE"
+    },
+    {
+        "exchange_rate": "1",
+        "timestamp": "2025-10-27T10:08:50.183874",
+        "platform": "WISE"
+    },
+    {
+        "exchange_rate": "3.2454",
+        "timestamp": "2025-10-27T10:09:26.794702",
+        "platform": "CIMB"
+    },
+    {
+        "exchange_rate": "3.2524",
+        "timestamp": "2025-10-27T10:09:26.794702",
         "platform": "WISE"
     }
 ]

@@ -208,12 +208,38 @@ def get_exchange_rate():
                 page.wait_for_timeout(5000)  # Wait additional 5 seconds
                 
                 # Debug page content and selectors
-                debug_selectors(page, "Wise", "span.text-success:nth-of-type(1)")
+                debug_selectors(page, "Wise", "span.text-success")
                 
-                rate_element = page.query_selector("span.text-success:nth-of-type(1)")
+                # Try multiple selectors for Wise rate
+                rate_element = None
+                selectors = [
+                    "span.text-success",
+                    "[class*='text-success']",
+                    "[data-testid='rate-value']",
+                    ".cc__source-to-target__rate",
+                    "[class*='rate']"
+                ]
+                
+                for selector in selectors:
+                    rate_element = page.query_selector(selector)
+                    if rate_element:
+                        print(f"Found element with selector: {selector}")
+                        break
+                
                 if rate_element:
                     wise_rate = rate_element.text_content().strip()
                     print(f"Found rate element with text: {wise_rate}")
+                    
+                    # Extract the rate value - looking for pattern like "1 SGD = 3.2527 MYR"
+                    match = re.search(r'=\s*([\d\.]+)\s*MYR', wise_rate)
+                    if match:
+                        wise_rate = match.group(1)
+                    else:
+                        # Try alternative pattern - just a decimal number
+                        match = re.search(r'(\d+\.\d+)', wise_rate)
+                        if match:
+                            wise_rate = match.group(1)
+                    
                     rates.append({
                         "exchange_rate": wise_rate,
                         "timestamp": timestamp.isoformat(),
@@ -222,6 +248,8 @@ def get_exchange_rate():
                     print(f"WISE Exchange Rate: {wise_rate}")
                 else:
                     print("Wise rate element not found!")
+                    # Take a screenshot for debugging
+                    page.screenshot(path=f"wise_debug_{datetime.now().strftime('%Y%m%d_%H%M%S')}.png")
                     
             except Exception as e:
                 print(f"Error fetching Wise rate: {str(e)}")
@@ -232,8 +260,17 @@ def get_exchange_rate():
             if rates:
                 data = []
                 if os.path.exists("exchange_rates.json"):
-                    with open("exchange_rates.json", "r") as json_file:
-                        data = json.load(json_file)
+                    try:
+                        with open("exchange_rates.json", "r") as json_file:
+                            content = json_file.read()
+                            if content.strip():  # Only parse if file has content
+                                data = json.loads(content)
+                    except json.JSONDecodeError as e:
+                        print(f"Warning: Could not parse existing JSON file: {e}")
+                        print("Backing up corrupted file and creating new one...")
+                        backup_name = f"exchange_rates_backup_{datetime.now().strftime('%Y%m%d_%H%M%S')}.json"
+                        os.rename("exchange_rates.json", backup_name)
+                        data = []
                 
                 data.extend(rates)
                 
